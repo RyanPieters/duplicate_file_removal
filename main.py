@@ -14,6 +14,7 @@ directory = Path(__file__).parent
 all_hashes = []
 dup_hashes = []
 dup = ""
+dup_files = []
 
 # main for loop
 for filename in os.listdir(directory):
@@ -36,3 +37,15 @@ for current_hash in all_hashes:
 dup_hashes = remove_every_other(dup_hashes)
 
 print("Current duplicate elements:", len(dup_hashes))
+
+for dup_hash in dup_hashes:
+    for filename in os.listdir(directory):
+        if filename.endswith(".jpg" or ".png"):
+            with open(filename, "rb") as f:
+                r_bytes = f.read()  # read entire file as bytes
+                readable_hash = hashlib.sha256(r_bytes).hexdigest();
+                if dup_hash == readable_hash:
+                    dup_files.append(filename)
+
+for files in dup_files:
+    print(dup_files)
