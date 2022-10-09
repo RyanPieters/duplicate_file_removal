@@ -1,6 +1,7 @@
 import hashlib
 import os
 from pathlib import Path
+import shutil
 
 
 # Removes every other element in a list
@@ -47,5 +48,28 @@ for dup_hash in dup_hashes:
                 if dup_hash == readable_hash:
                     dup_files.append(filename)
 
-for files in dup_files:
-    print(dup_files)
+dup_files = list(dict.fromkeys(dup_files))
+
+#del dup_files[::2]
+
+print("")
+print("The following duplicates have been identified as duplicates: ")
+print(dup_files)
+print("")
+print("")
+
+if input("Proceed moving duplicates to quarantine (Y)?:"):
+    os.rmdir('Quarantine')
+    os.mkdir('Quarantine')
+    quar_dir = (str(directory) + "\\Quarantine\\")
+
+    for files in dup_files:
+        for filename in os.listdir(directory):
+            if files == filename:
+                shutil.move(filename, quar_dir + filename)
+else:
+    print("program ended")
+
+
+
+
